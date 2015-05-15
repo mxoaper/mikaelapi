@@ -10,7 +10,7 @@ define('clienSecret', '682c5aa552c04c699a0c5fc588013947');
 define('redirectURI', 'http://localhost/mikaelapi/index.php');
 define('ImageDirectory', 'pics/');
 
-if isset(($GET['code'])) {
+if (isset($GET['code'])) {
     $code = ($GET['code']);
     $url = 'https://api.instagram.com/oauth/access_token';
     $access_token_settings = array('client_id' => clientID, 
