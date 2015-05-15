@@ -10,8 +10,23 @@ define('clienSecret', '682c5aa552c04c699a0c5fc588013947');
 define('redirectURI', 'http://localhost/mikaelapi/index.php');
 define('ImageDirectory', 'pics/');
 
-if (isset($GET['code'])) {
-    $code = ($GET['code']);
+
+//Function that is going to connect to instagram.
+function connectToInstagram($url){
+    $ch = curl_init();
+    curl_setopt_array($ch, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSL_VERIFYHOST => 2,
+        ));
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}
+
+if (isset($_GET['code'])) {
+    $code = ($_GET['code']);
     $url = 'https://api.instagram.com/oauth/access_token';
     $access_token_settings = array('client_id' => clientID, 
                                    'client_secret' => clientSecret,
@@ -25,9 +40,16 @@ curl_setopt($curl,CURLOPT_POST,true);
 curl_setopt($curl,CURLOPT_POSTFIELDS,$access_token_settings); //Setting the POSTFIELDS to the array setup that we created.
 curl_setopt($curl,CURLOPT_RETURNTRANSFER, 1); //setting it equal to 1 because we are getting strings back.
 curl_setopt($curl,CURLOPT_POST, false); //but in live work-production we want to set this to true
-}
+
+
 $result = curl_exec($curl);
-curl_close();
+curl_close($curl);
+
+
+$results = json_decode($result, true);
+echo $results['user']['username'];
+}
+else{
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +61,10 @@ curl_close();
 	<body>
 		<!-- Creating a login for people to go and give approval for our web app to access their Instagram Account -->
 		<!-- After getting approval we are now going to have the information so that we can playu with this -->
-		<a href="https:api.instagram.com/oauth/authorize/?client_id=<?php echo clientID; ?>&redirect_uri=<?php echo redirectURI?>&response_type=code">LOGIN</a>
+		<a href="https://api.instagram.com/oauth/authorize/?client_id=<?php echo clientID; ?>&redirect_uri=<?php echo redirectURI?>&response_type=code">Login</a>
 		<script src="js/main.js"></script>
 	</body>
 </html>
+<?php
+}
+?>
