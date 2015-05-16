@@ -6,7 +6,7 @@ session_start();
 
 //Make Constants using define
 define('clientID', '450fb4d9e03d4b80bc76515250409144');
-define('clienSecret', '682c5aa552c04c699a0c5fc588013947');
+define('clientSecret', '682c5aa552c04c699a0c5fc588013947');
 define('redirectURI', 'http://localhost/mikaelapi/index.php');
 define('ImageDirectory', 'pics/');
 
@@ -29,7 +29,7 @@ function getUserID($userName) {
     $url = 'http://api.instagram.com/v1/users/search?q='.$userName.'&client_id='.clientID;
     $instagramInfo = connectToInstagram($url);
     $results = json_decode($instagramInfo, true);
-    echo $results['data']['0']['id'];
+    return $results['data'][0]['id'];
 }
 
 //Function to print out images to screen 
@@ -45,7 +45,7 @@ function printImages($userID){
 }
 
 if (isset($_GET['code'])) {
-    $code = ($_GET['code']);
+    $code = $_GET['code'];
     $url = 'https://api.instagram.com/oauth/access_token';
     $access_token_settings = array('client_id' => clientID, 
                                    'client_secret' => clientSecret,
