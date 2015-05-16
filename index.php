@@ -51,8 +51,8 @@ function savePictures($image_url){
 	$filename = basename($image_url); //the filename is what we are storing, basename is the PHP built in method that we are using to store $images_url
 	echo $filename . '<br>';
 
-	$destination = ImageDirectory . $filename;
-	file_put_contents($destination, file_get_contents($image_url));
+	$destination = ImageDirectory . $filename; //making sure that the image does'nt exist in our storage
+	file_put_contents($destination, file_get_contents($image_url)); //goes and grabs an imagefile and stores it into our server
 }
 
 
